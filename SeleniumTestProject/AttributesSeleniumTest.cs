@@ -25,7 +25,35 @@ namespace SeleniumTestProject
         [Trait("Priority", "1")]
         [RetryFact(MaxRetries =2)]
         [UseCulture("bg-BG")]
+        [TestPriority(0)]
         public void ProperCheckboxSelected()
+        {
+            _driver.Navigate().GoToUrl("https://lambdatest.github.io/sample-todo-app/");
+
+            IWebElement todoInput = _driver.FindElement(By.Id("sampletodotext"));
+
+            DateTime birthDay = new DateTime(1990, 10, 28);
+            todoInput.SendKeys(birthDay.ToString("d"));
+
+            var addButton = _driver.FindElement(By.Id("addbutton"));
+            addButton.Click();
+
+            var todoCheckboxes = _driver.FindElements(By.XPath("//li[@ng-repeat]/input"));
+
+            todoCheckboxes.Last().Click();
+
+            var todoInfos = _driver.FindElements(By.XPath("//li[@ng-repeat]/span"));
+
+            Assert.Equal("28/10/1990", todoInfos.Last().Text);
+        }
+
+        //[Fact]
+        [Trait("Category", "CI")]
+        [Trait("Priority", "1")]
+        [RetryFact(MaxRetries = 2)]
+        [UseCulture("bg-BG")]
+        [TestPriority(1)]
+        public void SecundTest()
         {
             _driver.Navigate().GoToUrl("https://lambdatest.github.io/sample-todo-app/");
 
