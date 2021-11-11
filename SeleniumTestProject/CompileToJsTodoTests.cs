@@ -5,6 +5,7 @@ using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Opera;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
+using SeleniumTestProject.first;
 using System;
 using System.ComponentModel;
 using WebDriverManager;
@@ -14,35 +15,30 @@ using Xunit;
 
 namespace SeleniumTestProject
 {
-    public class TodoTests : IDisposable
+    public class CompileToJsTodoTests : IClassFixture<DriverFixture>
     {
-        private const int WAIT_FOR_ELEMENT_TIMEOUT = 30;
-        private readonly IWebDriver _driver;
-        private readonly WebDriverWait _webDriverWait;
-        private readonly Actions _actions;
+        private readonly DriverFixture _fixture;
 
-        public TodoTests()
+        public CompileToJsTodoTests(DriverFixture fixture)
         {
-            new DriverManager().SetUpDriver(new ChromeConfig(), VersionResolveStrategy.MatchingBrowser);
-            _driver = new ChromeDriver();
-            _webDriverWait = new WebDriverWait(_driver, TimeSpan.FromSeconds(WAIT_FOR_ELEMENT_TIMEOUT));
-            _actions = new Actions(_driver);
-        }
-
-        public void Dispose()
-        {
-            _driver.Quit(); 
+            _fixture = fixture;
         }
 
         [Theory]
-        [InlineData("React")]
-        [InlineData("AngularJS")]
+        [InlineData("Kotlin + React")]
         [InlineData("Spine")]
+        [InlineData("Dart")]
+        [InlineData("GWT")]
+        [InlineData("Closure")]
         [InlineData("Elm")]
+        [InlineData("AngularDart")]
+        [InlineData("TypeScript + Backbone.js")]
+        [InlineData("TypeScript + AngularJS")]
+        [InlineData("AngularJS")]
         [InlineData("Dojo")]
         public void VerifyTodoListCreateSuccessfully(string technology)
         {
-            _driver.Navigate().GoToUrl("https://todomvc.com");
+            _fixture.Driver.Navigate().GoToUrl("https://todomvc.com");
             OpenTehnologyApp(technology);
             AddNewTodoItem("Clean the Car");
             AddNewTodoItem("Clean the House");
@@ -67,7 +63,7 @@ namespace SeleniumTestProject
 
         private void ValidadeInnerTextIs(IWebElement resultSpan, string expectedText)
         {
-            _webDriverWait.Until(ExpectedConditions.TextToBePresentInElement(resultSpan, expectedText));
+            _fixture.WebDriverWait.Until(ExpectedConditions.TextToBePresentInElement(resultSpan, expectedText));
         }
 
         private IWebElement GetItemCheckbox(string todoItem)
@@ -79,7 +75,7 @@ namespace SeleniumTestProject
         {
             var todoInput = WaitAndFindElement(By.XPath("//input[@placeholder='What needs to be done?']"));
             todoInput.SendKeys(todoItem);
-            _actions.Click(todoInput).SendKeys(Keys.Enter).Perform();
+            todoInput.SendKeys(Keys.Enter);
 
         }
 
@@ -91,7 +87,7 @@ namespace SeleniumTestProject
 
         private IWebElement WaitAndFindElement(By locator)
         {
-            return _webDriverWait.Until(ExpectedConditions.ElementExists(locator));
+            return _fixture.WebDriverWait.Until(ExpectedConditions.ElementExists(locator));
         }
     }
 }
