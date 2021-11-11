@@ -20,9 +20,10 @@ namespace SeleniumTestProject
             _driver.Manage().Window.Maximize();
         }
 
-        [Fact]
+        //[Fact]
         [Trait("Category", "CI")]
         [Trait("Priority", "1")]
+        [RetryFact(MaxRetries =2)]
         public void ProperCheckboxSelected()
         {
             _driver.Navigate().GoToUrl("https://lambdatest.github.io/sample-todo-app/");
@@ -41,7 +42,7 @@ namespace SeleniumTestProject
 
             var todoInfos = _driver.FindElements(By.XPath("//li[@ng-repeat]/span"));
 
-            Assert.Equal("28/10/1990", todoInfos.Last().Text);
+            Assert.Equal("28/10/1991", todoInfos.Last().Text);
         }
 
         public void Dispose()
