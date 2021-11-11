@@ -8,7 +8,7 @@ namespace SeleniumTestProject
     public class FirstSeleniumTest : IDisposable
     {
 
-
+        // Fechando Navegador com interface IDisposable
         private IWebDriver _driver;
 
         public FirstSeleniumTest()
