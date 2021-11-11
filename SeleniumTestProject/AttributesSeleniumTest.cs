@@ -20,15 +20,9 @@ namespace SeleniumTestProject
             _driver.Manage().Window.Maximize();
         }
 
-        [Fact(Skip = "Não vai executar esse teste")]
-        public void skipTest()
-        {
-            _driver.Navigate().GoToUrl("https://lambdatest.github.io/sample-todo-app/");
-            IWebElement todoInput = _driver.FindElement(By.Id("sampletodotext"));
-            Assert.NotNull(todoInput);
-        }
-
         [Fact]
+        [Trait("Category", "CI")]
+        [Trait("Priority", "1")]
         public void ProperCheckboxSelected()
         {
             _driver.Navigate().GoToUrl("https://lambdatest.github.io/sample-todo-app/");
