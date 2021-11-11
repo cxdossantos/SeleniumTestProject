@@ -11,13 +11,11 @@ namespace SeleniumTestProject
         [Fact]
         public void CorrectTitleDisplayed_When_NavigateToHomePage()
         {
-            // Ao invés de utilizar uma variavel privada, podemos implementar com o 'using', desta forma ira fechar o navegador automaticamente
-            using (IWebDriver driver = new ChromeDriver())
-            {
-                driver.Navigate().GoToUrl("https://lambdatest.github.io/sample-todo-app/");
+            // Na ultima versão do dotnet, não é necessário utilizar 'chaves'
+            using var driver = new ChromeDriver();
 
-                Assert.Equal("Sample page - lambdatest.com", driver.Title);
-            }
+            driver.Navigate().GoToUrl("https://lambdatest.github.io/sample-todo-app/");
+            Assert.Equal("Sample page - lambdatest.com", driver.Title);
         }
     }
 }
