@@ -3,14 +3,16 @@ using Xunit;
 
 namespace SeleniumTestProject.third
 {
-    public class CompileToJsTodoChromeTests : IClassFixture<ChromeDriverFixture>, IClassFixture<PagesFixture>
+    public class CompileToJsTodoChromeTests : IClassFixture<ChromeDriverFixture>, IClassFixture<PagesFixture>, IClassFixture<TestDataFixture>
     {
         private readonly ChromeDriverFixture _fixture;
         private readonly PagesFixture _pagesFixture;
-        public CompileToJsTodoChromeTests(ChromeDriverFixture fixture, PagesFixture pagesFixture)
+        private readonly TestDataFixture _testDataFixture;
+        public CompileToJsTodoChromeTests(ChromeDriverFixture fixture, PagesFixture pagesFixture, TestDataFixture testDataFixture)
         {
             _fixture = fixture;
             _pagesFixture = pagesFixture;
+            _testDataFixture = testDataFixture;
         }
 
         [Theory]
@@ -27,11 +29,7 @@ namespace SeleniumTestProject.third
         [InlineData("Dojo")]
         public void VerifyTodoListCreateSuccessfully(string technology)
         {
-
-            var itemsAdd = new List<string>() {"Clean the Car", "Clean the House", "Clean the Room", "Clean the Club" };
-            var itemsCheck = new List<string>() { "Clean the Club" };
-
-            _pagesFixture.ToDoFacade.VerifyTodoListCreatedSuccessfuly(technology, itemsAdd, itemsCheck, 2);
+            _pagesFixture.ToDoFacade.VerifyTodoListCreatedSuccessfuly(technology, _testDataFixture.ItemsAdd, _testDataFixture.ItemsCheck, _testDataFixture.ExpectdItemsLeft);
         }
     }
 }
