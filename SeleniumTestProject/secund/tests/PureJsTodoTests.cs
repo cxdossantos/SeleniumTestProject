@@ -73,7 +73,7 @@ namespace SeleniumTestProject.secund
         {
             return WaitAndFindElement(By.XPath($"//label[text()='{todoItem}']/preceding-sibling::input"));
         }
-        ]
+        
 
         private void AddNewTodoItem(string todoItem)
         {

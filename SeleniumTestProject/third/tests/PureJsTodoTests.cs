@@ -7,6 +7,7 @@ using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using SeleniumTestProject.first;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using WebDriverManager;
 using WebDriverManager.DriverConfigs.Impl;
@@ -17,11 +18,12 @@ namespace SeleniumTestProject.third
 {
     public class PureJsTodoTests : IClassFixture<DriverFixture>
     {
-        private readonly DriverFixture _fixture;
-
-        public PureJsTodoTests(DriverFixture fixture)
+        private readonly ChromeDriverFixture _fixture;
+        private readonly PagesFixture _pagesFixture;
+        public PureJsTodoTests(ChromeDriverFixture fixture, PagesFixture pagesFixture)
         {
             _fixture = fixture;
+            _pagesFixture = pagesFixture;
         }
 
         [Theory]
@@ -38,59 +40,13 @@ namespace SeleniumTestProject.third
         [InlineData("Vue.js")]
         [InlineData("Marionette.js")]
         [InlineData("SocketStream")]
-        [InlineData("Marionette.js")]
         public void VerifyTodoListCreateSuccessfully(string technology)
         {
-            _fixture.Driver.GoToUrl("https://todomvc.com");
-            OpenTehnologyApp(technology);
-            AddNewTodoItem("Clean the Car");
-            AddNewTodoItem("Clean the House");
-            AddNewTodoItem("Clean the Room");
-            AddNewTodoItem("Clean the Club");
-            GetItemCheckbox("Clean the Room").Click();
-            AssertLeftItems(3);
-        }
 
-        private void AssertLeftItems(int expectedCount)
-        {
-            var resultSpan = WaitAndFindElement(By.XPath("//footer/span"));
-            if (expectedCount <= 0)
-            {
-                ValidadeInnerTextIs(resultSpan, $"{expectedCount} item left");
-            }
-            else
-            {
-                ValidadeInnerTextIs(resultSpan, $"{expectedCount} items left");
-            }
-        }
+            var itemsAdd = new List<string>() { "Clean the Car", "Clean the House", "Clean the Room", "Clean the Club" };
+            var itemsCheck = new List<string>() { "Clean the Club" };
 
-        private void ValidadeInnerTextIs(IWebElement resultSpan, string expectedText)
-        {
-            _fixture.WebDriverWait.Until(ExpectedConditions.TextToBePresentInElement(resultSpan, expectedText));
-        }
-
-        private IWebElement GetItemCheckbox(string todoItem)
-        {
-            return WaitAndFindElement(By.XPath($"//label[text()='{todoItem}']/preceding-sibling::input"));
-        }
-        ]
-
-        private void AddNewTodoItem(string todoItem)
-        {
-            var todoInput = WaitAndFindElement(By.XPath("//input[@placeholder='What needs to be done?']"));
-            todoInput.SendKeys(todoItem);
-            todoInput.SendKeys(Keys.Enter);
-        }
-
-        private void OpenTehnologyApp(string name)
-        {
-            IWebElement technologyLink = WaitAndFindElement(By.LinkText(name));
-            technologyLink.Click();
-        }
-
-        private IWebElement WaitAndFindElement(By locator)
-        {
-            return _fixture.WebDriverWait.Until(ExpectedConditions.ElementExists(locator));
+            _pagesFixture.ToDoFacade.VerifyTodoListCreatedSuccessfuly(technology, itemsAdd, itemsCheck, 2);
         }
     }
 }
