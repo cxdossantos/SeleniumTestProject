@@ -20,7 +20,7 @@ namespace SeleniumTestProject.third
             _mainPage.OpenTehnologyApp(technology);
 
             itemsToAdd.ForEach(item => _toDoAppPage.AddNewTodoItem(item));
-            itemsToCheck.ForEach(item => _toDoAppPage.GetItemCheckbox(item));
+            itemsToCheck.ForEach(item => _toDoAppPage.GetItemCheckbox(item).Click());
             _toDoAppPage.AssertLeftItems(expectedItemsLeft);
         }
 

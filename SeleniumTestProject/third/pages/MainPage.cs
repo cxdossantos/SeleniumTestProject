@@ -20,7 +20,7 @@ namespace SeleniumTestProject.third.pages
 
         public void Open()
         {
-            _driver.GoToUrl("https://todomvc.com");
+            _driver.GoToUrl(Url);
         }
 
         public void OpenTehnologyApp(string name)

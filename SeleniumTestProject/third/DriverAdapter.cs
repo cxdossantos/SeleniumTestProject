@@ -56,7 +56,8 @@ namespace SeleniumTestProject.third
         }
         public IWebElement FindElement(By locator)
         {
-            return _webDriverWait.Until(ExpectedConditions.ElementExists(locator));
+            var helper = _webDriverWait.Until(ExpectedConditions.ElementExists(locator));
+            return helper;
         }
 
         public void Dispose()

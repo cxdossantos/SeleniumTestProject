@@ -18,7 +18,7 @@ namespace SeleniumTestProject.third.pages
 
         public void AssertLeftItems(int expectedCount)
         {
-            var resultSpan = _driver.FindElement(By.XPath("//footer/span"));
+            var resultSpan = _driver.FindElement(By.XPath("//footer/*/span | //footer/span"));
             if (expectedCount <= 0)
             {
                 _driver.ValidadeInnerTextIs(resultSpan, $"{expectedCount} item left");
